@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
@@ -11,6 +11,16 @@ import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import { motion } from 'framer-motion';
 import { TodoItem, useTodoItems } from './TodoItemsContext';
+
+import {
+    DragDropContext,
+    Droppable,
+    Draggable,
+    DropResult,
+    ResponderProvided,
+    DraggableProvided,
+    DroppableProvided,
+  } from "react-beautiful-dnd";
 
 const spring = {
     type: 'spring',
@@ -31,26 +41,85 @@ export const TodoItemsList = function () {
 
     const classes = useTodoItemListStyles();
 
+    
     const sortedItems = todoItems.slice().sort((a, b) => {
         if (a.done && !b.done) {
             return 1;
         }
-
+        
         if (!a.done && b.done) {
             return -1;
         }
-
+        
         return 0;
     });
+    
+    const [localItems, setLocalItems] = useState<Array<any>>(sortedItems);
+
+    const handleDragEnd = (result: DropResult, provided?: ResponderProvided) => {
+        if (!result.destination) {
+        return;
+        }
+
+        if (result.destination.index === result.source.index) {
+        return;
+        }
+
+        setLocalItems((prev: any) => {
+            const temp = [...prev];
+            const d = temp[result.destination!.index];
+            temp[result.destination!.index] = temp[result.source.index];
+            temp[result.source.index] = d;
+            
+            console.log(temp, 'temp');
+            
+            return temp;
+        });
+
+    };
+
+    useEffect(()=>{
+        setLocalItems(sortedItems);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[todoItems])
 
     return (
-        <ul className={classes.root}>
-            {sortedItems.map((item) => (
-                <motion.li key={item.id} transition={spring} layout={true}>
-                    <TodoItemCard item={item} />
-                </motion.li>
-            ))}
-        </ul>
+         <DragDropContext onDragEnd={handleDragEnd}>
+             <Droppable droppableId="droppable" direction="vertical">
+                {(droppableProvided: DroppableProvided) => (
+                    <ul 
+                    className={classes.root}
+                    ref={droppableProvided.innerRef}
+                    {...droppableProvided.droppableProps}
+                    >
+                        {localItems.map((item, index) => (
+                            <Draggable
+                            key={item.id}
+                            draggableId={item.id}
+                            index={index}
+                            >
+                            {(
+                                draggableProvided: DraggableProvided,
+                            ) => {
+                                return (
+                                    <motion.li key={item.id} 
+                                    transition={spring} 
+                                    ref={draggableProvided.innerRef}
+                                    {...draggableProvided.draggableProps}
+                                    >
+                                        <div {...draggableProvided.dragHandleProps}>
+                                            <TodoItemCard item={item} />
+                                        </div>
+                                    </motion.li>
+                                );
+                            }}
+                            </Draggable>
+                        ))}
+                        {droppableProvided.placeholder}
+                    </ul>
+                )}
+            </Droppable>
+        </DragDropContext>
     );
 };
 
@@ -119,3 +188,5 @@ export const TodoItemCard = function ({ item }: { item: TodoItem }) {
         </Card>
     );
 };
+
+
