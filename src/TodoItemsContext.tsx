@@ -6,6 +6,8 @@ import {
     useReducer,
 } from 'react';
 
+import produce from 'immer';
+
 export interface TodoItem {
     id: string;
     title: string;
@@ -26,7 +28,8 @@ const TodoItemsContext = createContext<
     (TodoItemsState & { dispatch: (action: TodoItemsAction) => void }) | null
 >(null);
 
-const defaultState = { todoItems: [] };
+const defaultState : object = { todoItems: [] };
+
 const localStorageKey = 'todoListState';
 
 export const TodoItemsContextProvider = ({
@@ -42,12 +45,13 @@ export const TodoItemsContextProvider = ({
     })
     
     useEffect(() => {
-        const savedState = localStorage.getItem(localStorageKey);         
-
+        const savedState = localStorage.getItem(localStorageKey);  
+        
         if (savedState) {
-
             try {
-                dispatch({ type: 'loadState', data: JSON.parse(savedState) });
+                const savedStateObj = JSON.parse(savedState);
+                
+                dispatch({ type: 'loadState', data: savedStateObj });
             } catch {}
         }
     }, []);
@@ -81,34 +85,56 @@ function todoItemsReducer(state: TodoItemsState, action: TodoItemsAction) {
             return action.data;
         }
         case 'add':
-            return {
-                ...state,
-                todoItems: [
-                    { id: generateId(), done: false, ...action.data.todoItem },
-                    ...state.todoItems,
-                ],
-            };
+            // с immer
+            return produce(state, draft =>{
+                draft.todoItems = [
+                            { id: generateId(), done: false, ...action.data.todoItem },
+                            ...draft.todoItems,
+                        ]
+            })
+
+            // до immer
+            // {
+            //     ...state,
+            //     todoItems: [
+            //         { id: generateId(), done: false, ...action.data.todoItem },
+            //         ...state.todoItems,
+            //     ],
+            // };
         case 'delete':
-            return {
-                ...state,
-                todoItems: state.todoItems.filter(
+            return produce(state, draft =>{
+                draft.todoItems = draft.todoItems.filter(
                     ({ id }) => id !== action.data.id,
-                ),
-            };
+                )
+            })
+            // {
+            //     ...state,
+            //     todoItems: state.todoItems.filter(
+            //         ({ id }) => id !== action.data.id,
+            //     ),
+            // };
         case 'toggleDone':
             const itemIndex = state.todoItems.findIndex(
                 ({ id }) => id === action.data.id,
             );
             const item = state.todoItems[itemIndex];
 
-            return {
-                ...state,
-                todoItems: [
-                    ...state.todoItems.slice(0, itemIndex),
-                    { ...item, done: !item.done },
-                    ...state.todoItems.slice(itemIndex + 1),
-                ],
-            };
+            return produce(state, draft =>{
+                draft.todoItems = [
+                            ...draft.todoItems.slice(0, itemIndex),
+                            { ...item, done: !item.done },
+                            ...draft.todoItems.slice(itemIndex + 1),
+                        ]
+            })
+            
+            // {
+            //     ...state,
+            //     todoItems: [
+            //         ...state.todoItems.slice(0, itemIndex),
+            //         { ...item, done: !item.done },
+            //         ...state.todoItems.slice(itemIndex + 1),
+            //     ],
+            // };
         default:
             throw new Error();
     }

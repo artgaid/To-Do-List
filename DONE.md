@@ -13,3 +13,7 @@
   или редактирование задачи в одной вкладке должно отображаться
   во второй открытой вкладке того же браузера
   ([storage event](https://developer.mozilla.org/en-US/docs/Web/API/Window/storage_event))
+
+#### T3. Иммутабельность
+
+- Переведите код `todoItemsReducer` на [ImmerJS](https://immerjs.github.io/immer/)
