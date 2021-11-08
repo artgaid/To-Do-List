@@ -36,10 +36,16 @@ export const TodoItemsContextProvider = ({
 }) => {
     const [state, dispatch] = useReducer(todoItemsReducer, defaultState);
 
+    window.addEventListener('storage', event => {
+        const eventlistener = JSON.parse(event.storageArea?.todoListState)
+        dispatch({ type: 'loadState', data: eventlistener });
+    })
+    
     useEffect(() => {
-        const savedState = localStorage.getItem(localStorageKey);
+        const savedState = localStorage.getItem(localStorageKey);         
 
         if (savedState) {
+
             try {
                 dispatch({ type: 'loadState', data: JSON.parse(savedState) });
             } catch {}

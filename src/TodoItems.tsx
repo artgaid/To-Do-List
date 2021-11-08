@@ -65,7 +65,7 @@ export const TodoItemsList = function () {
         return;
         }
 
-        setLocalItems((prev: any) => {
+        setLocalItems((prev: Array<object>) => {
             const temp = [...prev];
             const d = temp[result.destination!.index];
             temp[result.destination!.index] = temp[result.source.index];
