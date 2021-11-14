@@ -1,4 +1,4 @@
-Задачи для решения:
+### Задачи для решения:
 
 #### 1. Приоритеты
 
@@ -14,6 +14,6 @@
   во второй открытой вкладке того же браузера
   ([storage event](https://developer.mozilla.org/en-US/docs/Web/API/Window/storage_event))
 
-#### T3. Иммутабельность
+#### 3. Иммутабельность
 
 - Переведите код `todoItemsReducer` на [ImmerJS](https://immerjs.github.io/immer/)
