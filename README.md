@@ -1,95 +1,35 @@
-# Webinar.ru — Тестовое задание для frontend-разработчиков
+# Another one of my test tasks for frontend developers =)
 
-- Выберите любые несколько задач из списка ниже. Не нужно решать все задачи.
-  Мы рассчитываем, что на выполнение тестового задания вы выделите 3-5 часов
-- Делайте промежуточные коммиты. Как минимум 1 задача = 1 коммит, можно чаще
-- Выложите репозиторий на [Github](https://github.com) или пришлите нам zip-архив 
-  (не забудьте включить в него папку `.git`)
-- В файле `DONE.md` напишите, какие задачи вы выбрали для решения и любые другие комментарии
+I was working on a small To-Do list application.
+A detailed version of the project can be seen in [editor](https://codesandbox.io/s/distracted-yalow-t5dpj?file=/src/App.tsx).
+____
+### The project was deployed with Create-React-App.
 
-## Задачи
+Use `npm install` to install dependencies and `npm start` 
+to deploy the project locally.
+____
 
-Вам предстоит работать над небольшим приложением для ведения списка дел (Todo List).
+## In this project I have added :
 
-Развёрнутую версию проекта можно посмотреть в [песочнице](https://codesandbox.io/s/distracted-yalow-t5dpj?file=/src/App.tsx).
+- [X] Priorities  
 
-Самые базовые функции уже доступны в проекте, над многим нужно поработать. 
+  The user wants to prioritize tasks, 
+to see the most important tasks at the top of the list.
 
-### Новые фичи
-
-#### F1. Приоритеты
-Пользователь хочет расставлять задачи по приоритетам, 
-чтобы видеть наверху списка самые важные задачи
-
-- Добавьте возможность менять порядок задач с помощью drag'n'drop 
-  (можно воспользоваться, например, [react-beautiful-dnd](https://github.com/atlassian/react-beautiful-dnd))
-
-#### F2. Напоминания
-Пользователь хочет не забывать о своих задачах
-
-- Добавьте возможность указывать время напоминания о задаче
-- Добавьте [браузерное уведомление](https://developer.mozilla.org/en-US/docs/Web/API/notification) 
-  для показа напоминания
-
-#### F3. Теги
-Пользователь хочет классифицировать задачи, чтобы не путаться в них
-
-- Добавьте возможность прикреплять теги к задаче
-- Добавьте возможность поиска (фильтрации) задач по тегам
-
-### Доработки
-
-#### I1. Редактирование
-- Реализуйте возможность редактирования уже созданной задачи
-
-#### I2. Синхронизация
-- Добавьте синхронизацию задач между соседними вкладками — добавление 
-  или редактирование задачи в одной вкладке должно отображаться 
-  во второй открытой вкладке того же браузера
+  Add the ability to change the order of tasks using drag'n'drop 
+  (I used [react-beautiful-dnd](https://github.com/atlassian/react-beautiful-dnd))
+  
+- [X] Sync
+  Add synchronization of tasks between neighboring tabs - 
+adding or editing a task in one tab should appear in a second open tab of the same browser
   ([storage event](https://developer.mozilla.org/en-US/docs/Web/API/Window/storage_event))
-
-#### I3. Свои идеи
-- Предложите и реализуйте свои улучшения пользовательского опыта
-
-### Баги
-
-#### B1. LocalStorage Quota
-При превышении доступного места в localStorage приложение падает с ошибкой
-`Setting the value of 'todoListState' exceeded the quota.`
-
-- Придумайте, как воспроизвести описанный кейс
-- Исправьте ошибочное поведение
-
-#### B2. Свой фикс
-- Если заметили какой-то баг — опишите и исправьте его 
   
-### Технические задачи
+- [X] immutability
+  changed the `todoItemsReducer` code to [ImmerJS](https://immerjs.github.io/immer/)
 
-#### T1. Форматирование кода
-- Подключите и настройте [Prettier](https://prettier.io/)
-- Настройте проверку форматирования кода на pre-commit hook 
-  (с помощью [husky](https://github.com/typicode/husky))
-  
-#### T2. Типизация
-- Избавьтесь от `any` в интерфейсе `TodoItemsAction` 
 
-#### T3. Иммутабельность
-- Переведите код `todoItemsReducer` на [ImmerJS](https://immerjs.github.io/immer/)
-
-#### T4. Свои идеи
-- Предложите и реализуйте свои технические улучшения (кода, инфраструктуры и т.д.)
-
-## Работа с проектом
-
-Проект был развёрнут с помощью Create React App.
-
-Используйте `npm install` для установки зависимостей и `npm start` 
-для локального разворачивания проекта.
-
-Больше информации можно найти в 
-[документации CRA](https://facebook.github.io/create-react-app/docs/getting-started).
-
-## Используемый стек
+____
+##  The technical stack
 
 - TypeScript
 - React
